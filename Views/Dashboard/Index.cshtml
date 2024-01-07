@@ -1,0 +1,169 @@
+﻿@model List<DOCUMENTMANAGER.Models.Document>;
+
+
+<style>
+    .Container1{
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 62vh;
+    }
+
+    form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 400px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input[type="file"] {
+        margin-bottom: 16px;
+    }
+
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+    .Container2 ,Container3{
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4caf50;
+        color: #fff;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="Container1">
+<Section> <h1> Document Upload</h1>
+<form asp-action="Upload" asp-controller="Dashboard" method="post" enctype="multipart/form-data">
+        <label for="profilePhoto">Profile Photo:</label>
+        <input type="file" id="profilePhoto" name="profilePhoto" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" onchange="validateFile(this)" required />
+        <br />
+
+        <label for="aadharCard">Aadhar card:</label>
+        <input type="file" id="aadharCard" name="aadharCard" multiple accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" onchange="validateFile(this)" required />
+        <br />
+
+        <label for="panCard">Pan Card:</label>
+        <input type="file" id="panCard" name="panCard" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" onchange="validateFile(this)" required />
+        <br />
+
+        <label for="voterId">Voter Id:</label>
+        <input type="file" id="voterId" name="voterId" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" onchange="validateFile(this)" required />
+        <br />
+
+        <label for="marksheet">Marksheet:</label>
+        <input type="file" id="marksheet" name="marksheet" accept=".jpg, .jpeg, .png, .pdf, .doc, .docx" onchange="validateFile(this)" required />
+        <br />
+        <button type="submit">Upload Documents</button>
+</form>
+</Section>
+</div>
+
+@if (Model.Count > 0)
+{
+    <div class="Container2">
+    <h2>Uploaded Documents</h2>
+<section class="Display">
+    
+
+    <ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Upload Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fileName in Model)
+                    {
+                        <tr>
+                            <td>@fileName.FileName</td>
+                            <td>@fileName.UploadDate.Date</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        
+    </ul>
+   </section>
+    </div>
+    <div class="container3">
+   <section download>
+            <h1> Document Download</h1>
+    <form asp-action="Download" asp-controller="Dashboard" method="post">
+        <label>Select documents to download:</label>
+        <br />
+
+        @foreach (var fileName in Model)
+        {
+            <div>
+                <label>
+                    <input type="checkbox" name="fileNames" value="@fileName.FilePath" />
+                    @fileName.FileName
+                </label>
+            </div>
+        }
+
+        <button type="submit">Download Selected</button>
+    </form>
+    </section>
+    </div>
+}
+else
+{
+    <p>No documents uploaded yet.</p>
+
+}
+
+
+
